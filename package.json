@@ -1,5 +1,8 @@
 {
   "name": "r3f-ts-drei-starter",
+  "description": "A starter template for React Three Fiber with Typescript and Drei",
+  "author": "MoonRakeR22",
+  "repository": "https://github.com/moonraker22/r3f-ts-drei-starter",
   "private": true,
   "version": "0.0.0",
   "type": "module",
