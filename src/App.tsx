@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
 import { Group } from 'three'
 import './App.css'
-import './styles.css'
+import './index.css'
 
 const Scene = () => {
   const scene = useRef<Group>(null!)
