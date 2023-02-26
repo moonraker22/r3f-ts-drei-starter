@@ -22,5 +22,6 @@
     }
   },
   "include": ["src"],
+  "ignore": ["**.gltf"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

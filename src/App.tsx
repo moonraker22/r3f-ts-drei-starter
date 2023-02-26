@@ -2,14 +2,18 @@ import {
   Box,
   Center,
   Float,
-  PresentationControls,
+  OrbitControls,
+  Point,
+  PointMaterial,
+  Points,
   Text3D,
   useMatcapTexture,
 } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
-import { Group } from 'three'
+import { Group, MathUtils } from 'three'
 import './App.css'
+import { Model } from './components/Low_poly_stack_of_money'
 import './index.css'
 
 const Cube = () => {
@@ -17,9 +21,9 @@ const Cube = () => {
   const [hovered, setHovered] = useState(false)
   useFrame(() => {
     if (!scene.current) return
-    scene.current.rotation.y += 0.04
-    scene.current.rotation.x += 0.04
-    scene.current.rotation.z += 0.04
+    scene.current.rotation.y += 0.01
+    scene.current.rotation.x += 0.01
+    scene.current.rotation.z += 0.01
   })
 
   return (
@@ -92,10 +96,28 @@ const Text = () => {
 }
 
 function App() {
+  const positions = Array.from({ length: 500 }, (i) => [
+    MathUtils.randFloatSpread(14),
+    MathUtils.randFloatSpread(14),
+    MathUtils.randFloatSpread(14),
+  ])
+
   return (
-    <Canvas>
-      {/* <OrbitControls /> */}
-      <PresentationControls
+    <Canvas gl={{ antialias: true }} style={{ width: '100%', height: '100%' }}>
+      <OrbitControls autoRotate autoRotateSpeed={0.7} />
+      <Points>
+        <PointMaterial
+          transparent
+          vertexColors
+          size={11}
+          sizeAttenuation={false}
+          depthWrite={false}
+        />
+        {positions.map((position, i) => (
+          <Point key={i} position={position} color={'teal'} />
+        ))}
+      </Points>
+      {/* <PresentationControls
         enabled={true} // the controls can be disabled by setting this to false
         global={false} // Spin globally or by dragging the model
         cursor={true} // Whether to toggle cursor style on drag
@@ -103,22 +125,23 @@ function App() {
         speed={1} // Speed factor
         zoom={1} // Zoom factor when half the polar-max is reached
         rotation={[0, 0, 0]} // Default rotation
-        polar={[0, 0]} // Vertical limits
+        polar={[0, Math.PI / 2]} // Vertical limits
         azimuth={[-Infinity, Infinity]} // Horizontal limits
         config={{ mass: 1, tension: 170, friction: 26 }} // Spring config
         // The DOM element events for this controller will attach to
+      > */}
+      <directionalLight intensity={0.5} />
+      <Float
+        speed={1} // Animation speed, defaults to 1
+        rotationIntensity={0.5} // XYZ rotation intensity, defaults to 1
+        floatIntensity={0.5} // Up/down float intensity, works like a multiplier with floatingRange,defaults to 1
+        floatingRange={[-0.5, 0.5]} // Range of y-axis values the object will float within, defaults to [-0.1,0.1]
       >
-        <directionalLight intensity={0.5} />
-        <Float
-          speed={1} // Animation speed, defaults to 1
-          rotationIntensity={1} // XYZ rotation intensity, defaults to 1
-          floatIntensity={1} // Up/down float intensity, works like a multiplier with floatingRange,defaults to 1
-          floatingRange={[-1, 1]} // Range of y-axis values the object will float within, defaults to [-0.1,0.1]
-        >
-          <Cube />
-        </Float>
-        <Text />
-      </PresentationControls>
+        {/* <Cube /> */}
+        <Model position={[0, 0, 0]} scale={[0.7, 0.7, 0.7]} />
+      </Float>
+      {/* <Text /> */}
+      {/* </PresentationControls> */}
     </Canvas>
   )
 }
