@@ -29,6 +29,7 @@ const Scene = () => {
 }
 
 const Text = () => {
+  // Matcaps from https://github.com/nidorx/matcaps
   const [matcapTexture] = useMatcapTexture('46804D_CBE9AC_90B57C_95D38F', 256)
   return (
     <group position={[0, 2, 0]}>
